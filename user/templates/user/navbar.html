@@ -1,0 +1,38 @@
+<!-- Navbar -->
+<nav class="navbar fixed-top z-3">
+	<div class="container-fluid pt-1">
+		<a href="{% url 'home' %}">
+			<img class="logo" src="https://learn.mulearn.org/assets/navbar/%C2%B5Learn.webp" style="width: 8rem !important;" alt="mulearn-logo"></a>
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+			<div class="offcanvas-header ">
+				<h4 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Task App</h4>
+				<button type="button" class="btn-close btn-close-black " data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			
+			<div class="offcanvas-body">
+				<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+					{% if request.user.is_superuser %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'admin:index' %}">Admin Portal</a>
+					</li>
+					{% endif %}
+
+					{% if request.user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'login' %}">Login</a>
+					</li>
+					{% endif %}
+
+				</ul>
+			</div>
+		</div>
+	</div>
+</nav>
