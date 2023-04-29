@@ -4,11 +4,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 
+from user.models import Todo
+
 # Create your views here.
 
 @login_required(login_url='login')
 def homePage(request):
-  context = {}
+  todo = Todo.objects.all()
+  context = {'todo': todo}
   return render(request, 'user/home.html', context)
 
 def loginPage(request):
@@ -50,3 +53,37 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'user/signup.html', {'form': form})
+  
+def createTodo(request):
+  todo = Todo()
+  context = {'todo': todo}
+  if request.method == 'POST':
+    title = request.POST["title"]
+    description = request.POST["description"]
+    completion = request.POST["completion"]
+    todo.completion_date = completion
+    todo.status = 'Ideation'
+    todo.title = title
+    todo.description = description
+    todo.save()
+    return redirect('home')
+
+  return render(request, "user/create_todo.html", context)
+
+
+def todo(request, pk):
+  todo = Todo.objects.get(id=pk)
+  context = {'todo': todo}
+  return render(request, "user/todo.html", context)
+
+def statusCompleted(request, pk):
+  todo = Todo.objects.get(id=pk)
+  todo.status = 'Completed'
+  todo.save()
+  return redirect('home')
+
+def statusInprogress(request, pk):
+  todo = Todo.objects.get(id=pk)
+  todo.status = 'In-progress'
+  todo.save()
+  return redirect('home')
