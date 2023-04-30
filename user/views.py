@@ -56,6 +56,7 @@ def signup(request):
   else:
       return redirect('signup')
 
+@login_required(login_url='login')
 def createTodo(request):
   todo = Todo()
   context = {'todo': todo}
@@ -72,6 +73,7 @@ def createTodo(request):
     return redirect('home')
   return render(request, "user/create_todo.html", context)
 
+@login_required(login_url='login')
 def todo(request, pk):
   todo = Todo.objects.get(id=pk)
   context = {'todo': todo}
