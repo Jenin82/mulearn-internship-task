@@ -8,23 +8,24 @@
 	
 	<div class="container pt-3">
 		<div class="row text-center">
+			<h1>Completed</h1>
 			{% for t in todo %}
-			<!-- Placement item -->
+			{% if t.status == 'Completed' %}
 			<div class="col-lg-6 col-sm-12 mb-5">
 				<div class="bg-white rounded social shadow py-5 px-4">
 					<h5 class="mb-2">{{t.title}}</h5>
 					<span class="small text-uppercase text-muted">{{t.description}}</span>
 					<p class="mb-2">Completion date: {{t.completion_date}}</p>
 					<div class="input-group mx-auto mb-2">
-						{% if t.status == 'In-progress' %}
-						<a href="" class="mx-auto">
-							<button type="button" class="btn btn-info">Status: {{t.status}}</button>
-						</a>
-						{% elif t.status == 'Completed' %}
+						{% if t.status == 'Completed' %}
 						<a href="" class="mx-auto">
 							<button type="button" class="btn btn-success">Status: {{t.status}}</button>
 						</a>
-						{% elif t.status == 'Ideation' %}
+						{% elif t.task_time == 'under' and t.status != 'Completed' %}
+						<a href="" class="mx-auto">
+							<button type="button" class="btn btn-info">Status: {{t.status}}</button>
+						</a>
+						{% elif t.task_time == 'over' and t.status != 'Completed' %}
 						<a href="" class="mx-auto">
 							<button type="button" class="btn btn-danger">Status: {{t.status}}</button>
 						</a>
@@ -35,7 +36,73 @@
 					</a>
 				</div><!-- End -->
 			</div>
+			{% endif %}
 			{% endfor %}
+			<hr>
+
+			<h1>In-progress</h1>
+			{% for t in todo %}
+			{% if t.task_time == 'under' and t.status != 'Completed' %}
+			<div class="col-lg-6 col-sm-12 mb-5">
+				<div class="bg-white rounded social shadow py-5 px-4">
+					<h5 class="mb-2">{{t.title}}</h5>
+					<span class="small text-uppercase text-muted">{{t.description}}</span>
+					<p class="mb-2">Completion date: {{t.completion_date}}</p>
+					<div class="input-group mx-auto mb-2">
+						{% if t.status == 'Completed' %}
+						<a href="" class="mx-auto">
+							<button type="button" class="btn btn-success">Status: {{t.status}}</button>
+						</a>
+						{% elif t.task_time == 'under' and t.status != 'Completed' %}
+						<a href="" class="mx-auto">
+							<button type="button" class="btn btn-info">Status: {{t.status}}</button>
+						</a>
+						{% elif t.task_time == 'over' and t.status != 'Completed' %}
+						<a href="" class="mx-auto">
+							<button type="button" class="btn btn-danger">Status: {{t.status}}</button>
+						</a>
+						{% endif %}
+					</div>
+					<a href="{% url 'todo' t.id %}" class="mx-auto">
+						<button type="button" class="btn btn-warning">Open</button>
+					</a>
+				</div><!-- End -->
+			</div>
+			{% endif %}
+			{% endfor %}
+			<hr>
+
+			<h1>Time Exceeded</h1>
+			{% for t in todo %}
+			{% if t.task_time == 'over' and t.status != 'Completed' %}
+			<div class="col-lg-6 col-sm-12 mb-5">
+				<div class="bg-white rounded social shadow py-5 px-4">
+					<h5 class="mb-2">{{t.title}}</h5>
+					<span class="small text-uppercase text-muted">{{t.description}}</span>
+					<p class="mb-2">Completion date: {{t.completion_date}}</p>
+					<div class="input-group mx-auto mb-2">
+						{% if t.status == 'Completed' %}
+						<a href="" class="mx-auto">
+							<button type="button" class="btn btn-success">Status: {{t.status}}</button>
+						</a>
+						{% elif t.task_time == 'under' and t.status != 'Completed' %}
+						<a href="" class="mx-auto">
+							<button type="button" class="btn btn-info">Status: {{t.status}}</button>
+						</a>
+						{% elif t.task_time == 'over' and t.status != 'Completed' %}
+						<a href="" class="mx-auto">
+							<button type="button" class="btn btn-danger">Status: {{t.status}}</button>
+						</a>
+						{% endif %}
+					</div>
+					<a href="{% url 'todo' t.id %}" class="mx-auto">
+						<button type="button" class="btn btn-warning">Open</button>
+					</a>
+				</div><!-- End -->
+			</div>
+			{% endif %}
+			{% endfor %}
+			<hr>
 		</div>
 	</div>
 

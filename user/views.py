@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from user.forms import TodoForm
 
 from user.models import Todo
 
@@ -27,7 +28,9 @@ def loginPage(request):
       if 'next' in request.POST:
         return HttpResponseRedirect(request.POST.get('next'))
       else:
-        return render(request, "user/home.html")
+        todo = Todo.objects.all()
+        context = {'todo': todo}
+        return render(request, "user/home.html",context)
     else:
       return render(request, "user/login.html", {
 				"message": "Invalid username or password"
@@ -56,18 +59,19 @@ def signup(request):
   
 def createTodo(request):
   todo = Todo()
-  context = {'todo': todo}
+  form = TodoForm()
+  context = {'todo': todo, 'form': form}
   if request.method == 'POST':
+    form = TodoForm(request.POST)
+    if form.is_valid():
+      todo = form.save(commit=False)
     title = request.POST["title"]
     description = request.POST["description"]
-    completion = request.POST["completion"]
-    todo.completion_date = completion
-    todo.status = 'Ideation'
+    todo.status = 'In-progress'
     todo.title = title
     todo.description = description
     todo.save()
     return redirect('home')
-
   return render(request, "user/create_todo.html", context)
 
 
