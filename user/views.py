@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from user.forms import TodoForm
+from datetime import datetime
 
 from user.models import Todo
 
@@ -59,22 +59,19 @@ def signup(request):
   
 def createTodo(request):
   todo = Todo()
-  form = TodoForm()
-  context = {'todo': todo, 'form': form}
+  context = {'todo': todo}
   if request.method == 'POST':
-    form = TodoForm(request.POST)
-    if form.is_valid():
-      todo = form.save(commit=False)
-    title = request.POST["title"]
-    description = request.POST["description"]
-    todo.host = request.user
-    todo.status = 'In-progress'
-    todo.title = title
-    todo.description = description
-    todo.save()
+    date_str = request.POST["completion"]
+    date_object = datetime.strptime(date_str, '%m-%d-%Y').date()
+    todo = Todo.objects.create(
+			host = request.user,
+			title = request.POST["title"],
+			description = request.POST["description"],
+			status = 'In-progress',
+			completion_date = date_object
+		)
     return redirect('home')
   return render(request, "user/create_todo.html", context)
-
 
 def todo(request, pk):
   todo = Todo.objects.get(id=pk)
