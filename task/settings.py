@@ -73,6 +73,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'task.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://mulearn-internship-task-production.up.railway.app/'
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
