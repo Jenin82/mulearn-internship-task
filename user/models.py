@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .utils import TodoStatus
 
 # Create your models here.
 
@@ -8,7 +9,7 @@ class Todo(models.Model):
   title = models.CharField(max_length=200)
   description = models.TextField(null=True, blank=True)
   completion_date = models.DateField(null=True, blank=True, default=None)
-  status = models.CharField(max_length=50, null=True, blank=True)
+  status = models.IntegerField(choices=TodoStatus.choices(), default=TodoStatus.INPROGRESS)
   task_time = models.CharField(null=True, blank=True, default="under", max_length=50)
   updated = models.DateTimeField(auto_now=True)
   created = models.DateTimeField(auto_now_add=True) 
