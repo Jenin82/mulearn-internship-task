@@ -73,10 +73,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'task.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://mulearn-internship-task-production.up.railway.app/'
-]
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -130,3 +126,5 @@ STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app','https://*.127.0.0.1']
