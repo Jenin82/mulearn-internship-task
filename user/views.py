@@ -67,6 +67,7 @@ def createTodo(request):
       todo = form.save(commit=False)
     title = request.POST["title"]
     description = request.POST["description"]
+    todo.host = request.user
     todo.status = 'In-progress'
     todo.title = title
     todo.description = description

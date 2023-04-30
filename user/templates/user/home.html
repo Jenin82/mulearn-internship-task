@@ -3,14 +3,14 @@
 
 <div class="pt-4"></div>
 <div class="pt-5">
-	<a href="{% url 'create-todo' %}"><button type="button" class="btn btn-warning btn-lg"><i class="bi bi-plus-circle"></i> Create new grievance</button></a>
+	<a href="{% url 'create-todo' %}"><button type="button" class="btn btn-warning btn-lg"><i class="bi bi-plus-circle"></i> Create new Task</button></a>
 	
 	
 	<div class="container pt-3">
 		<div class="row text-center">
 			<h1>Completed</h1>
 			{% for t in todo %}
-			{% if t.status == 'Completed' %}
+			{% if t.status == 'Completed' and request.user == t.host %}
 			<div class="col-lg-6 col-sm-12 mb-5">
 				<div class="bg-white rounded social shadow py-5 px-4">
 					<h5 class="mb-2">{{t.title}}</h5>
@@ -42,7 +42,7 @@
 
 			<h1>In-progress</h1>
 			{% for t in todo %}
-			{% if t.task_time == 'under' and t.status != 'Completed' %}
+			{% if t.task_time == 'under' and t.status != 'Completed' and request.user == t.host %}
 			<div class="col-lg-6 col-sm-12 mb-5">
 				<div class="bg-white rounded social shadow py-5 px-4">
 					<h5 class="mb-2">{{t.title}}</h5>
@@ -74,7 +74,7 @@
 
 			<h1>Time Exceeded</h1>
 			{% for t in todo %}
-			{% if t.task_time == 'over' and t.status != 'Completed' %}
+			{% if t.task_time == 'over' and t.status != 'Completed' and request.user == t.host %}
 			<div class="col-lg-6 col-sm-12 mb-5">
 				<div class="bg-white rounded social shadow py-5 px-4">
 					<h5 class="mb-2">{{t.title}}</h5>
