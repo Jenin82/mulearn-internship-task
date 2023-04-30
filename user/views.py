@@ -38,8 +38,8 @@ def loginPage(request):
 
 def logoutPage(request):
   logout(request)
-  context = {}
-  return render(request, "user/login.html", context)
+  return redirect('login')
+
 
 def signup(request):
   if request.user.is_authenticated:
