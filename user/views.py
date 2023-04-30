@@ -17,7 +17,7 @@ def homePage(request):
 
 def loginPage(request):
   if request.user.is_authenticated:
-    return render(request, "user/home.html")
+    return redirect('home')
 
   if request.method == "POST":
     username = request.POST["username"]
@@ -28,9 +28,7 @@ def loginPage(request):
       if 'next' in request.POST:
         return HttpResponseRedirect(request.POST.get('next'))
       else:
-        todo = Todo.objects.all()
-        context = {'todo': todo}
-        return render(request, "user/home.html",context)
+        return redirect('home')
     else:
       return render(request, "user/login.html", {
 				"message": "Invalid username or password"
