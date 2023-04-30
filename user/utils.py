@@ -1,8 +1,8 @@
-from enum import IntEnum
+from enum import Enum
 
-class TodoStatus(IntEnum):
-  INPROGRESS = 1
-  COMPLETED = 2
+class TodoStatus(Enum):
+  PR = 'In-Progress'
+  CO = 'Completed'
   
   @classmethod
   def choices(cls):

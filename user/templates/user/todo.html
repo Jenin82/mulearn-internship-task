@@ -13,11 +13,11 @@
 					<span class="small text-uppercase text-muted">Completion date: {{todo.completion_date}}</span>
 					<p class="mb-2">{{todo.description|linebreaks}}</p>
 					<div class="input-group mx-auto">
-						{% if todo.status == 'In-progress' %}
+						{% if todo.status == 'PR' %}
 						<a href="{% url 'completed' todo.id %}" class="mx-auto">
 							<button type="button" class="btn btn-primary">Mark as Complete</button>
 						</a>
-						{% elif todo.status == 'Completed' %}
+						{% elif todo.status == 'CO' %}
 						<a href="{% url 'inprogress' todo.id %}" class="mx-auto">
 							<button type="button" class="btn btn-primary">Mark as In-progress</button>
 						</a>

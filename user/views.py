@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from datetime import datetime
-
 from user.models import Todo
 
 # Create your views here.
@@ -67,7 +66,7 @@ def createTodo(request):
 			host = request.user,
 			title = request.POST["title"],
 			description = request.POST["description"],
-			status = 'In-progress',
+			status = 'PR',
 			completion_date = date_object
 		)
     return redirect('home')
@@ -81,12 +80,12 @@ def todo(request, pk):
 
 def statusCompleted(request, pk):
   todo = Todo.objects.get(id=pk)
-  todo.status = 'Completed'
+  todo.status = 'CO'
   todo.save()
   return redirect('home')
 
 def statusInprogress(request, pk):
   todo = Todo.objects.get(id=pk)
-  todo.status = 'In-progress'
+  todo.status = 'PO'
   todo.save()
   return redirect('home')
