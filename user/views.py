@@ -52,8 +52,8 @@ def signup(request):
       user = authenticate(username=username, password=raw_password)
       login(request, user)
       return redirect('home')
-  else:
-      return redirect('signup')
+  context = {'form': form}
+  return render(request, "user/signup.html", context)
 
 @login_required(login_url='login')
 def createTodo(request):

@@ -12,3 +12,4 @@ urlpatterns = [
     path('todo/<str:pk>/inprogress', views.statusInprogress, name="inprogress"),
 ]
 
+
