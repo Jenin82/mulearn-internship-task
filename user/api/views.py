@@ -40,3 +40,17 @@ def getTodo(request):
   serializer = TodoSerializer(todo, many=True)
   return Response(serializer.data)
 
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def updateTodo(request, pk):
+  if request.method == 'POST':
+    user = request.user
+    todo = user.todo_set.get(id=pk)
+    if todo.status == 'PR':
+      todo.status = 'CO'
+    elif todo.status == 'CO':
+      todo.status = 'PR'
+    todo.save()
+    serializer = TodoSerializer(todo)
+    return Response(serializer.data)
+  return Response({"message": "Hello, world!"})

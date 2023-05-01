@@ -9,6 +9,7 @@ class TodoSerializer(ModelSerializer):
     fields = '__all__'
     
     
+    
 # Register serializer
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
