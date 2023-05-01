@@ -2,7 +2,6 @@ from rest_framework.serializers import ModelSerializer
 from user.models import Todo
 from django.contrib.auth.models import User
 from rest_framework import  serializers
-from rest_framework import exceptions
 
 class TodoSerializer(ModelSerializer):
   class Meta:
