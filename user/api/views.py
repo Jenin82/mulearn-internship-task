@@ -53,4 +53,4 @@ def updateTodo(request, pk):
     todo.save()
     serializer = TodoSerializer(todo)
     return Response(serializer.data)
-  return Response({"message": "Hello, world!"})
+  return Response({"message": "use POST method"})
