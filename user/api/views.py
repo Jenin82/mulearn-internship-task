@@ -1,10 +1,12 @@
+from datetime import datetime
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import status
 
 from .serializers import TodoSerializer
 from user.models import Todo
@@ -23,34 +25,89 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
   serializer_class = MyTokenObtainPairSerializer
 
-@api_view(['GET'])
-def getRoutes(request):
-  routes = [
+class Routes(APIView):
+  def get(self, request, format=None):
+    routes = [
 		'api/token',
 		'api/token/refresh',
-	]
+		'register/',
+		'api/todo/   - use GET to retrieve all Todo and POST to create a new one. body:[title, description, completion(MM-DD-YYYY)]',
+		'todo/<str:pk>/   - use PUT to update status of a Todo provide todo id in url eg: todo/7/',
+		]
+    return Response(routes)
+
+@permission_classes([IsAuthenticated])
+class TodoGetOrPost(APIView):
   
-  return Response(routes)
+	def get(self, request, format=None):
+		user = request.user
+		todo = user.todo_set.all()
+		serializer = TodoSerializer(todo, many=True)
+		return Response(serializer.data)
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def getTodo(request):
-  user = request.user
-  todo = user.todo_set.all()
-  serializer = TodoSerializer(todo, many=True)
-  return Response(serializer.data)
+	def post(self, request, format=None):
+		if request.method == 'POST':
+			date_str = request.POST["completion"]
+			date_object = datetime.strptime(date_str, '%m-%d-%Y').date()
+			todo = Todo.objects.create(
+				host = request.user,
+				title = request.POST["title"],
+				description = request.POST["description"],
+				status = 'PR',
+				completion_date = date_object
+			)
+			serializer = TodoSerializer(todo)
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
-def updateTodo(request, pk):
-  if request.method == 'POST':
-    user = request.user
-    todo = user.todo_set.get(id=pk)
-    if todo.status == 'PR':
-      todo.status = 'CO'
-    elif todo.status == 'CO':
-      todo.status = 'PR'
-    todo.save()
-    serializer = TodoSerializer(todo)
-    return Response(serializer.data)
-  return Response({"message": "use POST method"})
+	def put(self, request, pk, format=None):
+		if request.method == 'PUT':
+			user = request.user
+			todo = user.todo_set.get(id=pk)
+			if todo.status == 'PR':
+				todo.status = 'CO'
+			elif todo.status == 'CO':
+				todo.status = 'PR'
+			todo.save()
+			serializer = TodoSerializer(todo)
+			return Response(serializer.data)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+# function based views :
+
+# @api_view(['GET'])
+# def getRoutes(request):
+#   routes = [
+# 		'api/token',
+# 		'api/token/refresh',
+# 		'api/todo/',
+# 		'register/',
+# 		'updatetodo/<str:pk>/',
+# 	]
+#   return Response(routes)
+
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def getTodo(request):
+#   user = request.user
+#   todo = user.todo_set.all()
+#   serializer = TodoSerializer(todo, many=True)
+#   return Response(serializer.data)
+
+# @api_view(['GET', 'POST'])
+# @permission_classes([IsAuthenticated])
+# def updateTodo(request, pk):
+#   if request.method == 'POST':
+#     user = request.user
+#     todo = user.todo_set.get(id=pk)
+#     if todo.status == 'PR':
+#       todo.status = 'CO'
+#     elif todo.status == 'CO':
+#       todo.status = 'PR'
+#     todo.save()
+#     serializer = TodoSerializer(todo)
+#     return Response(serializer.data)
+#   return Response({"message": "use POST method"})
