@@ -10,12 +10,10 @@
 		<div class="row text-center">
 			<h1>Completed</h1>
 			{% for t in todo %}
-			{% if t.status == 'CO' and request.user == t.host %}
+			{% if t.isCompleted == True and request.user == t.host %}
 			<div class="col-lg-6 col-sm-12 mb-5">
 				<div class="bg-white rounded social shadow py-5 px-4">
 					<h5 class="mb-2">{{t.title}}</h5>
-					<span class="small text-uppercase text-muted">{{t.description}}</span>
-					<p class="mb-2">Completion date: {{t.completion_date}}</p>
 					<div class="input-group mx-auto mb-2">
 						<a href="" class="mx-auto">
 							<button type="button" class="btn btn-success">Status: Completed</button>
@@ -32,37 +30,13 @@
 
 			<h1>In-progress</h1>
 			{% for t in todo %}
-			{% if t.task_time == 'under' and t.status == 'PR' and request.user == t.host %}
+			{% if t.isCompleted == False and request.user == t.host %}
 			<div class="col-lg-6 col-sm-12 mb-5">
 				<div class="bg-white rounded social shadow py-5 px-4">
 					<h5 class="mb-2">{{t.title}}</h5>
-					<span class="small text-uppercase text-muted">{{t.description}}</span>
-					<p class="mb-2">Completion date: {{t.completion_date}}</p>
 					<div class="input-group mx-auto mb-2">
 						<a href="" class="mx-auto">
 							<button type="button" class="btn btn-info">Status: In-Progress</button>
-						</a>
-					</div>
-					<a href="{% url 'todo' t.id %}" class="mx-auto">
-						<button type="button" class="btn btn-warning">Open</button>
-					</a>
-				</div><!-- End -->
-			</div>
-			{% endif %}
-			{% endfor %}
-			<hr>
-
-			<h1>Time Exceeded</h1>
-			{% for t in todo %}
-			{% if t.task_time == 'over' and t.status == 'PR' and request.user == t.host %}
-			<div class="col-lg-6 col-sm-12 mb-5">
-				<div class="bg-white rounded social shadow py-5 px-4">
-					<h5 class="mb-2">{{t.title}}</h5>
-					<span class="small text-uppercase text-muted">{{t.description}}</span>
-					<p class="mb-2">Completion date: {{t.completion_date}}</p>
-					<div class="input-group mx-auto mb-2">
-						<a href="" class="mx-auto">
-							<button type="button" class="btn btn-danger">Status: In-Progress</button>
 						</a>
 					</div>
 					<a href="{% url 'todo' t.id %}" class="mx-auto">

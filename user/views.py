@@ -60,14 +60,9 @@ def createTodo(request):
   todo = Todo()
   context = {'todo': todo}
   if request.method == 'POST':
-    date_str = request.POST["completion"]
-    date_object = datetime.strptime(date_str, '%m-%d-%Y').date()
     todo = Todo.objects.create(
 			host = request.user,
 			title = request.POST["title"],
-			description = request.POST["description"],
-			status = 'PR',
-			completion_date = date_object
 		)
     return redirect('home')
   return render(request, "user/create_todo.html", context)
@@ -80,12 +75,12 @@ def todo(request, pk):
 
 def statusCompleted(request, pk):
   todo = Todo.objects.get(id=pk)
-  todo.status = 'CO'
+  todo.isCompleted = True
   todo.save()
   return redirect('home')
 
 def statusInprogress(request, pk):
   todo = Todo.objects.get(id=pk)
-  todo.status = 'PO'
+  todo.isCompleted = False
   todo.save()
   return redirect('home')

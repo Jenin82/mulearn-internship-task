@@ -31,8 +31,8 @@ class Routes(APIView):
 		'api/token',
 		'api/token/refresh',
 		'register/',
-		'api/todo/   - use GET to retrieve all Todo and POST to create a new one. body:[title, description, completion(MM-DD-YYYY)]',
-		'todo/<str:pk>/   - use PUT to update status of a Todo provide todo id in url eg: todo/7/',
+		'api/todo/   - use GET to retrieve all Todo and POST to create a new one. body:[title:'']',
+		'todo/<str:pk>/   - use PUT or DELETE to update status/delete a Todo, provide todo id in url eg: todo/7/',
 		]
     return Response(routes)
 
@@ -47,14 +47,9 @@ class TodoGetOrPost(APIView):
 
 	def post(self, request, format=None):
 		if request.method == 'POST':
-			date_str = request.POST["completion"]
-			date_object = datetime.strptime(date_str, '%m-%d-%Y').date()
 			todo = Todo.objects.create(
 				host = request.user,
 				title = request.POST["title"],
-				description = request.POST["description"],
-				status = 'PR',
-				completion_date = date_object
 			)
 			serializer = TodoSerializer(todo)
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -64,16 +59,23 @@ class TodoGetOrPost(APIView):
 		if request.method == 'PUT':
 			user = request.user
 			todo = user.todo_set.get(id=pk)
-			if todo.status == 'PR':
-				todo.status = 'CO'
-			elif todo.status == 'CO':
-				todo.status = 'PR'
+			if todo.isCompleted == False:
+				todo.isCompleted = True
+			elif todo.isCompleted == True:
+				todo.isCompleted = False
 			todo.save()
 			serializer = TodoSerializer(todo)
 			return Response(serializer.data)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
+	
+	def delete(self, request, pk, format=None):
+		if request.method == 'DELETE':
+			user = request.user
+			todo = user.todo_set.get(id=pk)
+			todo.delete()
+			serializer = TodoSerializer(todo)
+			return Response(serializer.data)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # function based views :

@@ -10,14 +10,12 @@
 			<div class="col-lg-12 col-sm-12 mb-5">
 				<div class="bg-white rounded social shadow py-5 px-4">
 					<h5 class="mb-2">{{todo.title}}</h5>
-					<span class="small text-uppercase text-muted">Completion date: {{todo.completion_date}}</span>
-					<p class="mb-2">{{todo.description|linebreaks}}</p>
 					<div class="input-group mx-auto">
-						{% if todo.status == 'PR' %}
+						{% if todo.isCompleted == False %}
 						<a href="{% url 'completed' todo.id %}" class="mx-auto">
 							<button type="button" class="btn btn-primary">Mark as Complete</button>
 						</a>
-						{% elif todo.status == 'CO' %}
+						{% elif todo.isCompleted == True %}
 						<a href="{% url 'inprogress' todo.id %}" class="mx-auto">
 							<button type="button" class="btn btn-primary">Mark as In-progress</button>
 						</a>

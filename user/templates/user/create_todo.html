@@ -14,7 +14,7 @@
 						<label for="exampleFormControlInput1" class="form-label"><h3>TODO Title</h3></label>
 						<input type="text" name="title" form="room-form" class="form-control" id="exampleFormControlInput1" placeholder="">
 					</div>
-					<div class="mb-3">
+					{% comment %} <div class="mb-3">
 						<label for="exampleFormControlInput1" class="form-label"><h4>Completion date:</h4></label>
 						<div id="datepicker" class="input-group date" data-date-format="mm-dd-yyyy">
 							<input class="form-control" name="completion" type="text" readonly />
@@ -22,9 +22,9 @@
 								<i class="bi bi-calendar-minus"></i>
 							</span>
 						</div>
-					</div>
+					</div> {% endcomment %}
   
-					<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+					{% comment %} <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 					<script>
 						$(function () {
 							$("#datepicker").datepicker({ 
@@ -32,13 +32,12 @@
 								todayHighlight: true,
 							}).datepicker('update', new Date());
 						});
-					</script>
+					</script> {% endcomment %}
 						{% comment %} {{form.as_p}} {% endcomment %}
-					</div>
-					<div class="mb-3">
+					{% comment %} <div class="mb-3">
 						<label for="exampleFormControlTextarea1" class="form-label"><h4>Description</h4></label>
 						<textarea class="form-control" name="description" form="room-form" id="exampleFormControlTextarea1" rows="3" placeholder="Explain in detail"></textarea>
-					</div>
+					</div> {% endcomment %}
 					<div class="mb-3">
 						<a href="{{request.META.HTTP_REFERER}}" class="btn btn-primary">Go back</a>
 						<button type="submit" form="room-form" value="Submit" class="btn btn-success">Submit</button>
