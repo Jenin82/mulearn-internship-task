@@ -23,22 +23,21 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class MyTokenObtainPairView(TokenObtainPairView):
-  serializer_class = MyTokenObtainPairSerializer
+	serializer_class = MyTokenObtainPairSerializer
 
 class Routes(APIView):
-  def get(self, request, format=None):
-    routes = [
-		'api/token',
-		'api/token/refresh',
-		'register/',
-		'api/todo/   - use GET to retrieve all Todo and POST to create a new one. body:[title:'']',
-		'todo/<str:pk>/   - use PUT or DELETE to update status/delete a Todo, provide todo id in url eg: todo/7/',
-		]
-    return Response(routes)
+	def get(self, request, format=None):
+		routes = [
+			'api/login',
+			'api/token/refresh',
+			'api/register/',
+			'api/todo/   - use GET to retrieve all Todo and POST to create a new one. body:[title:'']',
+			'todo/<str:pk>/   - use PUT or DELETE to update status/delete a Todo, provide todo id in url eg: todo/7/',
+			]
+		return Response(routes)
 
 @permission_classes([IsAuthenticated])
 class TodoGetOrPost(APIView):
-  
 	def get(self, request, format=None):
 		user = request.user
 		todo = user.todo_set.all()
