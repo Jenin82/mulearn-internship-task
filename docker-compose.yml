@@ -1,0 +1,15 @@
+version: '3'
+services:
+  mulearn-internship-task:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mulearn-internship-task
+    image: mulearn-internship-task
+    restart: always
+    ports:
+      - "8006:8000"
+    volumes:
+      - /var/log/mulearn-internship-task:/var/log/mulearn-internship-task
+    env_file:
+      - .env
